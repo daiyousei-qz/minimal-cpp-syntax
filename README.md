@@ -5,6 +5,7 @@ Because of the complexity of the C++ language, it is hard for a syntax highlight
 1. Simplicity. Only to colorize a fraction of the C++ language has to offer.
 2. Performance. Of course, it's simple!
 3. Robustness. Less corner cases that could break the syntax rules.
+4. Agility. Syntax rules can catch up the latest C++ standard.
 
 ## Features
 
@@ -15,6 +16,14 @@ Syntax highlighting for:
 - Number literals
 - String literals
 - Preprocessor directives
+
+What this extension serves:
+
+To be used as a light-weight complement of a language-server-based semantic highligher like clangd-vscode.
+
+What this extension cannot do:
+
+Provides what the best that a syntax highlighter could offer and replace other C++ syntax highlighters.
 
 ## Requirements
 
@@ -40,6 +49,6 @@ Initial release of Least C++ Syntax.
 
 ## Credits
 
-Syntax rules in this extension are heavily influenced by [better-cpp-syntax](https://github.com/jeff-hykin/better-cpp-syntax)
+Syntax rules in this extension are heavily influenced by [better-cpp-syntax](https://github.com/jeff-hykin/better-cpp-syntax).
 
 Also, thanks for the community maintaining the awesome [cppreference](https://en.cppreference.com/w/)!
