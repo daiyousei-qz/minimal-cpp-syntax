@@ -1,0 +1,19 @@
+{
+    "name": "least-cpp-syntax",
+    "displayName": "Least C++ Syntax",
+    "description": "Minimal support for C++ syntax highlighting. This extension only attempts to colorize tokens that the language server does not.",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.65.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "grammars": [{
+            "language": "cpp",
+            "scopeName": "source.cpp",
+            "path": "./syntaxes/cpp.tmLanguage.json"
+        }]
+    }
+}

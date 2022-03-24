@@ -1,0 +1,22 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-syntax",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "/usr/bin/bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "command": "npx js-yaml syntaxes/cpp.tmLanguage.yaml > syntaxes/cpp.tmLanguage.json",
+            "problemMatcher": []
+        }
+    ]
+}

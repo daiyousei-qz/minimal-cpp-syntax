@@ -1,0 +1,536 @@
+$schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
+
+name: C++
+scopeName: source.cpp
+
+patterns:
+    - include: '#comments'
+    - include: '#keywords'
+    - include: '#operators'
+    - include: '#numberLiterals'
+    - include: '#stringLiterals'
+    - include: '#preprocessDirectives'
+
+repository:
+    # ==================================================
+    # comments
+    comments:
+        patterns:
+            - include: '#lineComment'
+            - include: '#blockComment'
+
+    lineComment:
+        name: comment.line.cpp
+        match: '(\/\/).*$'
+        captures:
+            1: { name: punctuation.definition.comment.cpp }
+
+    blockComment:
+        name: comment.block.cpp
+        begin: '\/\*'
+        end: '\*\/'
+        beginCaptures:
+            0: { name: punctuation.definition.comment.begin.cpp }
+        endCaptures:
+            0: { name: punctuation.definition.comment.end.cpp }
+
+    # ==================================================
+    # keywords
+    keywords:
+        patterns:
+          - include: '#keywordOperator'
+          - include: '#keywordControl'
+          - include: '#keywordType'
+          - include: '#keywordOther'
+
+    keywordOperator:
+        name: keyword.operator.$1.cpp
+        match: '\b(new|delete|sizeof)\b'
+
+    keywordControl:
+        name: keyword.control.$1.cpp
+        match: '\b(if|else|switch|case|while|for|break|continue|return|goto)\b'
+
+    keywordType:
+        name: keyword.other.type.cpp
+        match: '\b(auto|bool|char|char8_t|char16_t|char32_t|float|double|int|long|short|signed|unsigned|void|wchar_t)\b'
+
+    # definition below also includes contextual keywords
+    # when they are used as names, semantic coloring should override the token type
+    keywordOther:
+        name: keyword.cpp
+        match: >
+          (?x)\b
+          (?:
+              # a-z
+              alignas|alignof|asm|auto|bool|break|
+              case|catch|char|char8_t|char16_t|char32_t|
+              class|concept|const|consteval|constexpr|
+              constinit|const_cast|continue|co_await|
+              co_return|co_yield|decltype|default|delete|
+              do|double|dynamic_cast|else|enum|explicit|
+              export|extern|false|float|for|friend|goto|
+              if|inline|int|long|mutable|namespace|new|
+              noexcept|nullptr|operator|private|protected|
+              public|register|reinterpret_cast|requires|
+              return|short|signed|sizeof|static|static_cast|
+              struct|switch|template|this|thread_local|
+              throw|true|try|typedef|typeid|typename|
+              union|unsigned|using|virtual|void|volatile|
+              wchar_t|while|
+
+              # contextual
+              final|override|import|module
+          )
+          \b
+
+    # ==================================================
+    # operators/symbols
+
+    operators:
+        patterns:
+          - include: '#operatorAssignment'
+          - include: '#operatorIncrement'
+          - include: '#operatorDecrement'
+          - include: '#opeartorArithmetic'
+          - include: '#operatorLogical'
+          - include: '#operatorComparison'
+          - include: '#operatorTernary'
+          - include: '#operatorDotAccess'
+          - include: '#operatorPointerAccess'
+          - include: '#operatorComma'
+          - include: '#operatorSemicolon'
+          - include: '#operatorBracket'
+          - include: '#operatorLineContinuation'
+
+    operatorAssignment:
+        name: keyword.operator.assignment.cpp
+        match: '<<=|>>=|\+=|-=|\*=|/=|%=|&=|\|=|\^='
+
+    operatorIncrement:
+        name: keyword.operator.increment.cpp
+        match: '\+\+'
+
+    operatorDecrement:
+        name: keyword.operator.decrement.cpp
+        match: '--'
+
+    opeartorArithmetic: # TODO: fix me */& could be used for member access
+        name: keyword.operator.arithmetic.cpp
+        match: '<<|>>|\+|-|\*|\/|%|~|&|\||\^'
+
+    operatorLogical:
+        name: keyword.operator.logical.cpp
+        match: '&&|\|\||!'
+
+    operatorComparison:
+        name: keyword.operator.comparison.cpp
+        match: '==|!=|<=>|<=|>=|<|>'
+
+    operatorTernary: # TODO: fix me : could be used after labels
+        name: punctuation.seperator.ternary.cpp
+        match: '\?|:'
+
+    operatorDotAccess:
+        name: punctuation.seperator.dot-access.cpp
+        match: '\.\*|\.'
+
+    operatorPointerAccess:
+        name: punctuation.seperator.pointer-access.cpp
+        match: '->\*|->'
+
+    operatorComma:
+        name: punctuation.seperator.delimiter.comma.cpp
+        match: ','
+
+    operatorSemicolon:
+        name: punctuation.terminator.statement.cpp
+        match: ';'
+
+    operatorBracket:
+        patterns:
+          - name: punctuation.section.begin.round.cpp
+            match: '\('
+          - name: punctuation.section.end.round.cpp
+            match: '\)'
+          - name: punctuation.section.begin.curly.cpp
+            match: '{'
+          - name: punctuation.section.end.curly.cpp
+            match: '}'
+          - name: punctuation.section.attribute.begin.cpp
+            match: '\[\['
+          - name: punctuation.section.attribute.end.cpp
+            match: '\]\]'
+          - name: punctuation.section.begin.square.cpp
+            match: '\['
+          - name: punctuation.section.end.square.cpp
+            match: '\]'
+
+    operatorLineContinuation:
+        name: constant.character.escape.line-continuation.cpp
+        match: '\\$'
+
+    # ==================================================
+    # number literals
+    numberLiterals:
+        patterns:
+            - include: '#invalidNumberPrecheck'
+            - include: '#hexadecimalFloat'
+            - include: '#hexadecimalFloatFromExp'
+            - include: '#decimalFloat'
+            - include: '#decimalFloatFromExp'
+            - include: '#binaryInteger'
+            - include: '#octalInteger'
+            - include: '#hexadecimalInteger'
+            - include: '#decimalInteger'
+            # - include: '#invalidNumberPostcheck'
+
+    decimalFloat:
+        name: constant.numeric.decimal.cpp
+        match: >
+            (?x)\b
+            (?:
+                [0-9](?:'?[0-9])*\.[0-9](?:'?[0-9])*|
+                \.[0-9](?:'?[0-9])*|
+                [0-9](?:'?[0-9])*\.
+            )
+            (
+                [eE][+-]?[0-9]+
+            )?
+            (
+                f|F|l|L
+            )?
+        captures:
+            1: { name: constant.numeric.exponent.decimal.cpp }
+            2: { name: keyword.other.unit.suffix.floating-point.cpp }
+    decimalFloatFromExp:
+        name: constant.numeric.decimal.cpp
+        match: >
+            (?x)\b
+            (?:
+                [0-9](?:'?[0-9])*
+            )
+            (
+                [eE][+-]?[0-9]+
+            )
+            (
+                f|F|l|L
+            )?
+        captures:
+            1: { name: constant.numeric.exponent.decimal.cpp }
+            2: { name: keyword.other.unit.suffix.floating-point.cpp }
+    hexadecimalFloat:
+        name: constant.numeric.hexadecimal.cpp
+        match: >
+            (?x)\b
+            (0x|0X)
+            (?:
+                [0-9a-fA-F](?:'?[0-9a-fA-F])*\.[0-9a-fA-F](?:'?[0-9a-fA-F])*|
+                \.[0-9a-fA-F](?:'?[0-9a-fA-F])*|
+                [0-9a-fA-F](?:'?[0-9a-fA-F])*\.
+            )
+            (
+                [pP][+-]?[0-9]+
+            )?
+            (
+                f|F|l|L
+            )?
+        captures:
+            1: { name: keyword.other.unit.hexadecimal.cpp }
+            2: { name: constant.numeric.exponent.hexadecimal.cpp }
+            3: { name: keyword.other.unit.suffix.floating-point.cpp }
+    hexadecimalFloatFromExp:
+        name: constant.numeric.hexadecimal.cpp
+        match: >
+            (?x)\b
+            (0x|0X)
+            (?:
+                [0-9a-fA-F](?:'?[0-9a-fA-F])*
+            )
+            (
+                [pP][+-]?[0-9]+
+            )
+            (
+                f|F|l|L
+            )?
+        captures:
+            1: { name: keyword.other.unit.hexadecimal.cpp }
+            2: { name: constant.numeric.exponent.hexadecimal.cpp }
+            3: { name: keyword.other.unit.suffix.floating-point.cpp }
+
+    binaryInteger:
+        name: constant.numeric.binary.cpp
+        match: >
+            (?x)\b
+            (0b|0B)
+            (?:
+                [0-1](?:'?[0-1])*
+            )
+            (
+              (u|U)(l|L|ll|LL|z|Z)?|
+              (l|L|ll|LL|z|Z)(u|U)?
+            )?
+        captures:
+            1: { name: keyword.other.unit.binary.cpp }
+            2: { name: keyword.other.unit.suffix.integer.cpp }
+    octalInteger:
+        name: constant.numeric.octal.cpp
+        match: >
+            (?x)\b
+            (0)
+            (?:
+                [0-7](?:'?[0-7])*
+            )
+            (
+              (u|U)(l|L|ll|LL|z|Z)?|
+              (l|L|ll|LL|z|Z)(u|U)?
+            )?
+        captures:
+            1: { name: keyword.other.unit.octal.cpp }
+            2: { name: keyword.other.unit.suffix.integer.cpp }
+    hexadecimalInteger:
+        name: constant.numeric.hexadecimal.cpp
+        match: >
+            (?x)\b
+            (0x|0x)
+            (?:
+                [0-9a-fA-F](?:'?[0-9a-fA-F])*
+            )
+            (
+              (u|U)(l|L|ll|LL|z|Z)?|
+              (l|L|ll|LL|z|Z)(u|U)?
+            )?
+        captures:
+            1: { name: keyword.other.unit.hexadecimal.cpp }
+            2: { name: keyword.other.unit.suffix.integer.cpp }
+    decimalInteger:
+        name: constant.numeric.decimal.cpp
+        match: >
+            (?x)\b
+            (?:
+                [1-9](?:'?[0-9])*|0
+            )
+            (
+                (u|U)(l|L|ll|LL|z|Z)?|
+                (l|L|ll|LL|z|Z)(u|U)?
+            )?
+        captures:
+            1: { name: keyword.other.unit.suffix.integer.cpp }
+
+    invalidNumberPrecheck:
+        name: invalid.illegal.constant.numeric.cpp
+        match: >
+            (?x)\b
+            (?:
+                (?:0b|0B)(?![0-1])|
+                (?:0b|0B)[0-1](?:'?[0-1])*'?[2-9][0-9']*|
+                0'?[8-9][0-9']*|
+                0'?[0-7](?:'?[0-7])*'?[8-9][0-9']*
+            )
+
+    # invalidNumberPostcheck:
+    #     name: invalid.illegal.constant.numeric.cpp
+    #     match: >
+    #         (?x)\b
+    #         (?:
+    #             0b|0B|0x|0X|
+    #             (?:0b|0B)[2-9a-zA-Z_][0-9a-zA-Z_']*|
+    #             0[8-9a-zA-Z_][0-9a-zA-Z_']*|
+    #             (?:0x|0X)[g-zG-Z_][0-9a-zA-Z_']*
+    #         )
+
+    # ==================================================
+    # string literals
+
+    stringLiterals:
+        patterns:
+          - include: '#stringSingle'
+          - include: '#stringDouble'
+          - include: '#stringDoubleRaw'
+
+    stringSingle:
+        name: string.quoted.single.cpp
+        begin: (u|u8|U|L)?\'
+        end: \'
+        patterns:
+          - include: '#escapeCharacter'
+
+    stringDoubleRaw:
+        name: string.quoted.double.raw.cpp
+        begin: (u|u8|U|L)?R\"[^\(\)\\\s]*\(
+        end: \)[^\(\)\\\s]*\"
+        beginCaptures:
+            0: { name: punctuation.definition.string.begin.cpp }
+            1: { name: meta.encoding.cpp }
+        endCaptures:
+            0: { name: punctuation.definition.string.end.cpp }
+        patterns:
+          - include: '#escapeCharacter'
+
+    stringDouble:
+        name: string.quoted.double.cpp
+        begin: (u|u8|U|L)?\"
+        end: \"
+        beginCaptures:
+            0: { name: punctuation.definition.string.begin.cpp }
+            1: { name: meta.encoding.cpp }
+        endCaptures:
+            0: { name: punctuation.definition.string.end.cpp }
+        patterns:
+          - include: '#escapeCharacter'
+
+    escapeCharacter:
+        patterns:
+          - name: constant.character.escape
+            match: '\\[0-8]{1,3}'
+          - name: constant.character.escape
+            match: '\\x([0-9a-fA-F]{2})+'
+          - name: constant.character.escape
+            match: '\\u[0-9a-fA-F]{4}'
+          - name: constant.character.escape
+            match: '\\U[0-9a-fA-F]{8}'
+          - name: constant.character.escape
+            match: (\\['"?\\abfnrtv])
+
+    # ==================================================
+    # preprocessor
+    preprocessDirectives:
+        patterns:
+          - include: '#preprocessorDefine'
+          - include: '#preprocessorUndef'
+          - include: '#preprocessorConditionalExpr'
+          - include: '#preprocessorConditionalId'
+          - include: '#preprocessorConditionalNone'
+          - include: '#preprocessorInclude'
+          - include: '#preprocessorLine'
+          - include: '#preprocessorWarningError'
+
+    preprocessorDefine: # TODO
+        name: meta.preprocessor.define.cpp
+        begin: '^\s*(?=#define\b)'
+        end: (?<!\\)\R
+        patterns:
+          - include: '#preprocessLineContinuation'
+          - begin: '(#define)\s+([a-zA-Z_][0_9a-zA-Z_]*)\('
+            end: '\)'
+            beginCaptures:
+              1: { name: keyword.control.directive.define.cpp }
+              2: { name: entity.name.macro.cpp }
+            patterns:
+              - name: punctuation.separator.parameters.cpp
+                match: ','
+              - name: variable.parameter.preprocessor.cpp
+                match: '\b[a-zA-Z_][0_9a-zA-Z_]*\b'
+          - match: '(#define)\s+([a-zA-Z_][0_9a-zA-Z_]*)\b'
+            captures:
+              1: { name: keyword.control.directive.define.cpp }
+              2: { name: entity.name.macro.cpp }
+          - include: '#comments'
+          - include: '#keywords'
+          - include: '#operators'
+          - include: '#numberLiterals'
+          - include: '#stringLiterals'
+
+    preprocessorUndef:
+        name: meta.preprocessor.undef.cpp
+        begin: '^\s*(#undef)\s+'
+        end: (?<!\\)\R
+        beginCaptures:
+          1: { name: keyword.control.directive.undef.cpp }
+        patterns:
+          - include: '#preprocessLineContinuation'
+          - name: entity.name.macro.cpp
+            match: '\b[a-zA-Z_][0_9a-zA-Z_]*\b'
+
+    preprocessorConditionalExpr:
+        name: meta.preprocessor.conditional.cpp
+        begin: ^\s*(#(if|elif))\s+
+        end: (?<!\\)\R
+        beginCaptures:
+          1: { name: keyword.control.directive.$2.cpp }
+        patterns:
+            - name: keyword.control.directive.$1.cpp
+              match: \b(defined|__has_include|__has_cpp_attribute)\b
+            - include: '#preprocessLineContinuation'
+            - include: '#operators'
+            - include: '#numberLiterals'
+            - include: '#stringLiterals'
+
+    preprocessorConditionalId:
+        name: meta.preprocessor.conditional.cpp
+        begin: ^\s*(#(ifdef|ifndef|elifdef|elifndef))\s+
+        end: (?<!\\)\R
+        beginCaptures:
+          1: { name: keyword.control.directive.$2.cpp }
+        patterns:
+          - include: '#preprocessLineContinuation'
+
+    preprocessorConditionalNone:
+        name: meta.preprocessor.conditional.cpp
+        begin: ^\s*(#(else|endif))\s+
+        end: (?<!\\)\R
+        beginCaptures:
+          1: { name: keyword.control.directive.$2.cpp }
+        patterns:
+          - include: '#preprocessLineContinuation'
+
+    preprocessorInclude:
+        name: meta.preprocessor.include.cpp
+        begin: ^\s*(#include)\s+
+        end: (?<!\\)\R
+        beginCaptures:
+          1: { name: keyword.control.directive.include.cpp }
+        patterns:
+          - include: '#preprocessLineContinuation'
+          - include: '#preprocessStringDouble'
+          - include: '#preprocessStringLtGt'
+
+    preprocessorLine:
+        name: meta.preprocessor.line.cpp
+        begin: ^\s*(#line)\s+
+        end: (?<!\\)\R
+        beginCaptures:
+          1: { name: keyword.control.directive.line.cpp }
+        patterns:
+          - include: '#preprocessLineContinuation'
+          - include: '#preprocessStringDouble'
+          - name: constant.numeric.decimal.cpp
+            match: '\d+'
+
+    preprocessorWarningError:
+        name: meta.preprocessor.$2.cpp
+        begin:  ^\s*(#(warning|error))\s+
+        end: (?<!\\)\R
+        beginCaptures:
+          1: { name: keyword.control.directive.$2.cpp }
+        patterns:
+          - include: '#preprocessLineContinuation'
+          - include: '#preprocessStringDouble'
+          - name: string.unquoted.cpp
+            match: '.'
+
+    preprocessLineContinuation:
+        patterns:
+          - include: '#operatorLineContinuation'
+
+    preprocessStringDouble:
+        name: string.quoted.double.cpp
+        begin: '"'
+        end: '"'
+        beginCaptures:
+          0: { name: punctuation.definition.string.begin.cpp }
+        endCaptures:
+          0: { name: punctuation.definition.string.end.cpp }
+        patterns:
+          - include: '#operatorLineContinuation'
+
+    preprocessStringLtGt:
+        name: string.quoted.other.ltgt.cpp
+        begin: '<'
+        end: '>'
+        beginCaptures:
+          0: { name: punctuation.definition.string.begin.cpp }
+        endCaptures:
+          0: { name: punctuation.definition.string.end.cpp }
+        patterns:
+          - include: '#operatorLineContinuation'
