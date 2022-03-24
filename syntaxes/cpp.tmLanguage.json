@@ -79,7 +79,7 @@
     },
     "keywordControl": {
       "name": "keyword.control.$1.cpp",
-      "match": "\\b(if|else|switch|case|default(?!\\s*;)|while|for|break|continue|return|goto)\\b"
+      "match": "\\b(if|else|switch|case|default(?=\\s*:)|while|for|break|continue|return|goto)\\b"
     },
     "keywordType": {
       "name": "keyword.other.type.cpp",
@@ -389,12 +389,7 @@
         "0": {
           "name": "punctuation.definition.string.end.cpp"
         }
-      },
-      "patterns": [
-        {
-          "include": "#escapeCharacter"
-        }
-      ]
+      }
     },
     "stringDouble": {
       "name": "string.quoted.double.cpp",

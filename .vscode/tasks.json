@@ -17,6 +17,21 @@
             },
             "command": "npx js-yaml syntaxes/cpp.tmLanguage.yaml > syntaxes/cpp.tmLanguage.json",
             "problemMatcher": []
+        },
+        {
+            "label": "package-vsix",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "/usr/bin/bash",
+                    "args": [
+                        "-c"
+                    ]
+                }
+            },
+            "command": "npx vsce package",
+            "problemMatcher": []
         }
     ]
 }

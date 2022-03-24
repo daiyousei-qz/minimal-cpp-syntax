@@ -3,6 +3,10 @@
     "displayName": "Least C++ Syntax",
     "description": "Minimal support for C++ syntax highlighting. This extension only attempts to colorize tokens that the language server does not.",
     "version": "0.0.1",
+    "repository": { 
+        "type": "git", 
+        "url": "https://github.com/daiyousei-qz/least-cpp-syntax" 
+    },
     "engines": {
         "vscode": "^1.65.0"
     },
