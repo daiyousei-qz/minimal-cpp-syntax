@@ -50,3 +50,12 @@ BUZ
 #elifndef FOO
 #else
 #endif
+
+#define HELLO(X) 1
+#if HELLO(int)
+
+#endif
+
+#if __has_include(<vector>) && __has_cpp_attribute(noreturn)
+
+#endif

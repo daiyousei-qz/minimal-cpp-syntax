@@ -92,6 +92,12 @@
     "operators": {
       "patterns": [
         {
+          "include": "#operatorAlternativeText"
+        },
+        {
+          "include": "#operatorAlternativePunctuation"
+        },
+        {
           "include": "#operatorAssignment"
         },
         {
@@ -131,6 +137,14 @@
           "include": "#operatorLineContinuation"
         }
       ]
+    },
+    "operatorAlternativeText": {
+      "name": "keyword.operator.alternative.cpp",
+      "match": "\\b(?:and_eq|not_eq|or_eq|xor_eq|and|not|or|xor|bitand|bit_or|compl)\\b"
+    },
+    "operatorAlternativePunctuation": {
+      "name": "keyword.operator.alternative.cpp",
+      "match": "(?:<%|%>|<:|:>|%:|%:%:)"
     },
     "operatorAssignment": {
       "name": "keyword.operator.assignment.cpp",
@@ -249,31 +263,37 @@
     },
     "decimalFloat": {
       "name": "constant.numeric.decimal.cpp",
-      "match": "(?x)(?<!\\w) (?:\n    [0-9](?:'?[0-9])*\\.[0-9](?:'?[0-9])*|\n    \\.[0-9](?:'?[0-9])*|\n    [0-9](?:'?[0-9])*\\.\n) (\n    [eE][+-]?[0-9]+\n)? (\n    f|F|l|L\n)?\n",
+      "match": "(?x)(?<!\\w) (?:\n    [0-9](?:'?[0-9])*\\.[0-9](?:'?[0-9])*|\n    \\.[0-9](?:'?[0-9])*|\n    [0-9](?:'?[0-9])*\\.\n) (\n    [eE][+-]?[0-9]+\n)? (?:\n    ([fFlL])\\b|\n    ([a-zA-Z_][0-9a-zA-Z_]*)\n)?\n",
       "captures": {
         "1": {
           "name": "constant.numeric.exponent.decimal.cpp"
         },
         "2": {
           "name": "keyword.other.unit.suffix.floating-point.cpp"
+        },
+        "3": {
+          "name": "keyword.other.unit.suffix.user-defined.cpp"
         }
       }
     },
     "decimalFloatFromExp": {
       "name": "constant.numeric.decimal.cpp",
-      "match": "(?x)(?<!\\w) (?:\n    [0-9](?:'?[0-9])*\n) (\n    [eE][+-]?[0-9]+\n) (\n    f|F|l|L\n)?\n",
+      "match": "(?x)(?<!\\w) (?:\n    [0-9](?:'?[0-9])*\n) (\n    [eE][+-]?[0-9]+\n) (?:\n    ([fFlL])\\b|\n    ([a-zA-Z_][0-9a-zA-Z_]*)\n)?\n",
       "captures": {
         "1": {
           "name": "constant.numeric.exponent.decimal.cpp"
         },
         "2": {
           "name": "keyword.other.unit.suffix.floating-point.cpp"
+        },
+        "3": {
+          "name": "keyword.other.unit.suffix.user-defined.cpp"
         }
       }
     },
     "hexadecimalFloat": {
       "name": "constant.numeric.hexadecimal.cpp",
-      "match": "(?x)(?<!\\w) (0x|0X) (?:\n    [0-9a-fA-F](?:'?[0-9a-fA-F])*\\.[0-9a-fA-F](?:'?[0-9a-fA-F])*|\n    \\.[0-9a-fA-F](?:'?[0-9a-fA-F])*|\n    [0-9a-fA-F](?:'?[0-9a-fA-F])*\\.\n) (\n    [pP][+-]?[0-9]+\n)? (\n    f|F|l|L\n)?\n",
+      "match": "(?x)(?<!\\w) (0x|0X) (?:\n    [0-9a-fA-F](?:'?[0-9a-fA-F])*\\.[0-9a-fA-F](?:'?[0-9a-fA-F])*|\n    \\.[0-9a-fA-F](?:'?[0-9a-fA-F])*|\n    [0-9a-fA-F](?:'?[0-9a-fA-F])*\\.\n) (\n    [pP][+-]?[0-9]+\n) (?:\n    ([fFlL])\\b|\n    ([a-zA-Z_][0-9a-zA-Z_]*)\n)?\n",
       "captures": {
         "1": {
           "name": "keyword.other.unit.hexadecimal.cpp"
@@ -283,12 +303,15 @@
         },
         "3": {
           "name": "keyword.other.unit.suffix.floating-point.cpp"
+        },
+        "4": {
+          "name": "keyword.other.unit.suffix.user-defined.cpp"
         }
       }
     },
     "hexadecimalFloatFromExp": {
       "name": "constant.numeric.hexadecimal.cpp",
-      "match": "(?x)(?<!\\w) (0x|0X) (?:\n    [0-9a-fA-F](?:'?[0-9a-fA-F])*\n) (\n    [pP][+-]?[0-9]+\n) (\n    f|F|l|L\n)?\n",
+      "match": "(?x)(?<!\\w) (0x|0X) (?:\n    [0-9a-fA-F](?:'?[0-9a-fA-F])*\n) (\n    [pP][+-]?[0-9]+\n) (?:\n    ([fFlL])\\b|\n    ([a-zA-Z_][0-9a-zA-Z_]*)\n)?\n",
       "captures": {
         "1": {
           "name": "keyword.other.unit.hexadecimal.cpp"
@@ -298,57 +321,72 @@
         },
         "3": {
           "name": "keyword.other.unit.suffix.floating-point.cpp"
+        },
+        "4": {
+          "name": "keyword.other.unit.suffix.user-defined.cpp"
         }
       }
     },
     "binaryInteger": {
       "name": "constant.numeric.binary.cpp",
-      "match": "(?x)(?<!\\w) (0b|0B) (?:\n    [0-1](?:'?[0-1])*\n) (\n  (u|U)(ll|LL|l|L|z|Z)?|\n  (ll|LL|l|L|z|Z)(u|U)?\n)?\n",
+      "match": "(?x)(?<!\\w) (0b|0B) (?:\n    [0-1](?:'?[0-1])*\n) (?:\n    ((?:u|U)(?:ll|LL|l|L|z|Z)?|(?:ll|LL|l|L|z|Z)(?:u|U)?)\\b|\n    ([a-zA-Z_][0-9a-zA-Z_]*)\n)?\n",
       "captures": {
         "1": {
           "name": "keyword.other.unit.binary.cpp"
         },
         "2": {
           "name": "keyword.other.unit.suffix.integer.cpp"
+        },
+        "3": {
+          "name": "keyword.other.unit.suffix.user-defined.cpp"
         }
       }
     },
     "octalInteger": {
       "name": "constant.numeric.octal.cpp",
-      "match": "(?x)(?<!\\w) (0) (?:\n    [0-7](?:'?[0-7])*\n) (\n  (u|U)(ll|LL|l|L|z|Z)?|\n  (ll|LL|l|L|z|Z)(u|U)?\n)?\n",
+      "match": "(?x)(?<!\\w) (0) (?:\n    [0-7](?:'?[0-7])*\n) (?:\n    ((?:u|U)(?:ll|LL|l|L|z|Z)?|(?:ll|LL|l|L|z|Z)(?:u|U)?)\\b|\n    ([a-zA-Z_][0-9a-zA-Z_]*)\n)?\n",
       "captures": {
         "1": {
           "name": "keyword.other.unit.octal.cpp"
         },
         "2": {
           "name": "keyword.other.unit.suffix.integer.cpp"
+        },
+        "3": {
+          "name": "keyword.other.unit.suffix.user-defined.cpp"
         }
       }
     },
     "hexadecimalInteger": {
       "name": "constant.numeric.hexadecimal.cpp",
-      "match": "(?x)(?<!\\w) (0x|0x) (?:\n    [0-9a-fA-F](?:'?[0-9a-fA-F])*\n) (\n  (u|U)(ll|LL|l|L|z|Z)?|\n  (ll|LL|l|L|z|Z)(u|U)?\n)?\n",
+      "match": "(?x)(?<!\\w) (0x|0x) (?:\n    [0-9a-fA-F](?:'?[0-9a-fA-F])*\n) (?:\n    ((?:u|U)(?:ll|LL|l|L|z|Z)?|(?:ll|LL|l|L|z|Z)(?:u|U)?)\\b|\n    ([a-zA-Z_][0-9a-zA-Z_]*)\n)?\n",
       "captures": {
         "1": {
           "name": "keyword.other.unit.hexadecimal.cpp"
         },
         "2": {
           "name": "keyword.other.unit.suffix.integer.cpp"
+        },
+        "3": {
+          "name": "keyword.other.unit.suffix.user-defined.cpp"
         }
       }
     },
     "decimalInteger": {
       "name": "constant.numeric.decimal.cpp",
-      "match": "(?x)(?<!\\w) (?:\n    [1-9](?:'?[0-9])*|0\n) (\n  (u|U)(ll|LL|l|L|z|Z)?|\n  (ll|LL|l|L|z|Z)(u|U)?\n)?\n",
+      "match": "(?x)(?<!\\w) (?:\n    [1-9](?:'?[0-9])*|0\n) (?:\n    ((?:u|U)(?:ll|LL|l|L|z|Z)?|(?:ll|LL|l|L|z|Z)(?:u|U)?)\\b|\n    ([a-zA-Z_][0-9a-zA-Z_]*)\n)?\n",
       "captures": {
         "1": {
           "name": "keyword.other.unit.suffix.integer.cpp"
+        },
+        "2": {
+          "name": "keyword.other.unit.suffix.user-defined.cpp"
         }
       }
     },
     "invalidNumberPrecheck": {
       "name": "invalid.illegal.constant.numeric.cpp",
-      "match": "(?x)(?<!\\w) (?:\n    (?:0b|0B)[2-9][0-9']*|\n    (?:0b|0B)(?![0-1])|\n    (?:0b|0B)[0-1](?:'?[0-1])*'?[2-9][0-9']*|\n    0'?[8-9][0-9']*|\n    0'?[0-7](?:'?[0-7])*'?[8-9][0-9']*\n)\n"
+      "match": "(?x)(?<!\\w) (?:\n    (?:0b|0B)[2-9][0-9']*|\n    (?:0b|0B)[0-1](?:'?[0-1])*'?[2-9][0-9']*|\n    (?:0b|0B)(?![0-1])|\n    0'?[8-9][0-9']*|\n    0'?[0-7](?:'?[0-7])*'?[8-9][0-9']*|\n    (?:0x|0X)[0-9a-fA-F]*\\.[0-9a-fA-F]*+(?![pP])\n)\n"
     },
     "stringLiterals": {
       "patterns": [
@@ -375,8 +413,8 @@
     },
     "stringDoubleRaw": {
       "name": "string.quoted.double.raw.cpp",
-      "begin": "(u|u8|U|L)?R\\\"[^\\(\\)\\\\\\s]*\\(",
-      "end": "\\)[^\\(\\)\\\\\\s]*\\\"",
+      "begin": "(u|u8|U|L)?R\\\"[^\\(\\)\\\\\\s]{0,16}\\(",
+      "end": "\\)[^\\(\\)\\\\\\s]{0,16}\\\"",
       "beginCaptures": {
         "0": {
           "name": "punctuation.definition.string.begin.cpp"
@@ -466,19 +504,22 @@
         },
         {
           "include": "#preprocessorPragma"
+        },
+        {
+          "include": "#preprocessorUnknown"
         }
       ]
     },
     "preprocessorDefine": {
       "name": "meta.preprocessor.define.cpp",
-      "begin": "^\\s*(?=#define\\b)",
+      "begin": "^\\s*(?=#\\s*define\\b)",
       "end": "(?<!\\\\)\\R",
       "patterns": [
         {
           "include": "#preprocessLineContinuation"
         },
         {
-          "begin": "(#define)\\s+([a-zA-Z_][0_9a-zA-Z_]*)\\(",
+          "begin": "(#\\s*define)\\s+([a-zA-Z_][0_9a-zA-Z_]*)\\(",
           "end": "\\)",
           "beginCaptures": {
             "1": {
@@ -500,7 +541,7 @@
           ]
         },
         {
-          "match": "(#define)\\s+([a-zA-Z_][0_9a-zA-Z_]*)\\b",
+          "match": "(#\\s*define)\\s+([a-zA-Z_][0_9a-zA-Z_]*)\\b",
           "captures": {
             "1": {
               "name": "keyword.control.directive.define.cpp"
@@ -529,7 +570,7 @@
     },
     "preprocessorUndef": {
       "name": "meta.preprocessor.undef.cpp",
-      "begin": "^\\s*(#undef)\\s+",
+      "begin": "^\\s*(#\\s*undef)\\s+",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -548,7 +589,7 @@
     },
     "preprocessorConditionalExpr": {
       "name": "meta.preprocessor.conditional.cpp",
-      "begin": "^\\s*(#(if|elif))\\s+",
+      "begin": "^\\s*(#\\s*(if|elif))\\s+",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -557,26 +598,52 @@
       },
       "patterns": [
         {
-          "name": "keyword.control.directive.$1.cpp",
-          "match": "\\b(defined|__has_include|__has_cpp_attribute)\\b"
-        },
-        {
           "include": "#preprocessLineContinuation"
         },
         {
-          "include": "#numberLiterals"
+          "begin": "\\b(__has_include)\\((?=[\"<])",
+          "end": "(?<=[\">])\\)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.directive.__has_include.cpp"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#preprocessLineContinuation"
+            },
+            {
+              "include": "#preprocessStringDouble"
+            },
+            {
+              "include": "#preprocessStringLtGt"
+            },
+            {
+              "include": "#preprocessExpr"
+            }
+          ]
         },
         {
-          "include": "#stringLiterals"
+          "name": "keyword.control.directive.defined.cpp",
+          "match": "\\b(?:defined)\\b"
         },
         {
-          "include": "#operators"
+          "name": "keyword.control.directive.__has_cpp_attribute.cpp",
+          "match": "\\b(?:__has_cpp_attribute)\\b",
+          "captures": {
+            "0": {
+              "keyword.control.directive.__has_cpp_attribute.cpp": null
+            }
+          }
+        },
+        {
+          "include": "#preprocessExpr"
         }
       ]
     },
     "preprocessorConditionalId": {
       "name": "meta.preprocessor.conditional.cpp",
-      "begin": "^\\s*(#(ifdef|ifndef|elifdef|elifndef))\\s+",
+      "begin": "^\\s*(#\\s*(ifdef|ifndef|elifdef|elifndef))\\s+",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -591,7 +658,7 @@
     },
     "preprocessorConditionalNone": {
       "name": "meta.preprocessor.conditional.cpp",
-      "begin": "^\\s*(#(else|endif))\\s+",
+      "begin": "^\\s*(#\\s*(else|endif))\\s+",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -606,7 +673,7 @@
     },
     "preprocessorInclude": {
       "name": "meta.preprocessor.include.cpp",
-      "begin": "^\\s*(#include)\\s+",
+      "begin": "^\\s*(#\\s*include)\\s+",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -627,7 +694,7 @@
     },
     "preprocessorLine": {
       "name": "meta.preprocessor.line.cpp",
-      "begin": "^\\s*(#line)\\s+",
+      "begin": "^\\s*(#\\s*line)\\s+",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -649,7 +716,7 @@
     },
     "preprocessorDiagonistic": {
       "name": "meta.preprocessor.$2.cpp",
-      "begin": "^\\s*(#(warning|error))\\s+",
+      "begin": "^\\s*(#\\s*(warning|error))\\s+",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -671,7 +738,7 @@
     },
     "preprocessorPragma": {
       "name": "meta.preprocessor.pragma.cpp",
-      "begin": "^\\s*(#pragma)\\s+",
+      "begin": "^\\s*(#\\s*pragma)\\s+",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -693,10 +760,36 @@
         }
       ]
     },
+    "preprocessorUnknown": {
+      "name": "meta.preprocessor.unknown.cpp",
+      "begin": "^\\s*(#\\s*\\w*)",
+      "end": "(?<!\\\\)\\R",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.directive.unknown.cpp"
+        }
+      }
+    },
     "preprocessLineContinuation": {
       "patterns": [
         {
           "include": "#operatorLineContinuation"
+        }
+      ]
+    },
+    "preprocessExpr": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#operators"
+        },
+        {
+          "include": "#numberLiterals"
+        },
+        {
+          "include": "#stringLiterals"
         }
       ]
     },

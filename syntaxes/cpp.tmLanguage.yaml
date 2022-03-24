@@ -89,6 +89,8 @@ repository:
 
     operators:
         patterns:
+          - include: '#operatorAlternativeText'
+          - include: '#operatorAlternativePunctuation'
           - include: '#operatorAssignment'
           - include: '#operatorIncrement'
           - include: '#operatorDecrement'
@@ -102,6 +104,14 @@ repository:
           - include: '#operatorSemicolon'
           - include: '#operatorBracket'
           - include: '#operatorLineContinuation'
+
+    operatorAlternativeText:
+        name: keyword.operator.alternative.cpp
+        match: '\b(?:and_eq|not_eq|or_eq|xor_eq|and|not|or|xor|bitand|bit_or|compl)\b'
+
+    operatorAlternativePunctuation:
+        name: keyword.operator.alternative.cpp
+        match: '(?:<%|%>|<:|:>|%:|%:%:)'
 
     operatorAssignment:
         name: keyword.operator.assignment.cpp
@@ -185,6 +195,7 @@ repository:
             - include: '#decimalInteger'
             # - include: '#invalidNumberPostcheck'
 
+    # TODO: capture eE as separate symbol
     decimalFloat:
         name: constant.numeric.decimal.cpp
         match: >
@@ -197,12 +208,14 @@ repository:
             (
                 [eE][+-]?[0-9]+
             )?
-            (
-                f|F|l|L
+            (?:
+                ([fFlL])\b|
+                ([a-zA-Z_][0-9a-zA-Z_]*)
             )?
         captures:
             1: { name: constant.numeric.exponent.decimal.cpp }
             2: { name: keyword.other.unit.suffix.floating-point.cpp }
+            3: { name: keyword.other.unit.suffix.user-defined.cpp }
     decimalFloatFromExp:
         name: constant.numeric.decimal.cpp
         match: >
@@ -213,12 +226,14 @@ repository:
             (
                 [eE][+-]?[0-9]+
             )
-            (
-                f|F|l|L
+            (?:
+                ([fFlL])\b|
+                ([a-zA-Z_][0-9a-zA-Z_]*)
             )?
         captures:
             1: { name: constant.numeric.exponent.decimal.cpp }
             2: { name: keyword.other.unit.suffix.floating-point.cpp }
+            3: { name: keyword.other.unit.suffix.user-defined.cpp }
     hexadecimalFloat:
         name: constant.numeric.hexadecimal.cpp
         match: >
@@ -231,14 +246,16 @@ repository:
             )
             (
                 [pP][+-]?[0-9]+
-            )?
-            (
-                f|F|l|L
+            )
+            (?:
+                ([fFlL])\b|
+                ([a-zA-Z_][0-9a-zA-Z_]*)
             )?
         captures:
             1: { name: keyword.other.unit.hexadecimal.cpp }
             2: { name: constant.numeric.exponent.hexadecimal.cpp }
             3: { name: keyword.other.unit.suffix.floating-point.cpp }
+            4: { name: keyword.other.unit.suffix.user-defined.cpp }
     hexadecimalFloatFromExp:
         name: constant.numeric.hexadecimal.cpp
         match: >
@@ -250,13 +267,15 @@ repository:
             (
                 [pP][+-]?[0-9]+
             )
-            (
-                f|F|l|L
+            (?:
+                ([fFlL])\b|
+                ([a-zA-Z_][0-9a-zA-Z_]*)
             )?
         captures:
             1: { name: keyword.other.unit.hexadecimal.cpp }
             2: { name: constant.numeric.exponent.hexadecimal.cpp }
             3: { name: keyword.other.unit.suffix.floating-point.cpp }
+            4: { name: keyword.other.unit.suffix.user-defined.cpp }
 
     binaryInteger:
         name: constant.numeric.binary.cpp
@@ -266,13 +285,14 @@ repository:
             (?:
                 [0-1](?:'?[0-1])*
             )
-            (
-              (u|U)(ll|LL|l|L|z|Z)?|
-              (ll|LL|l|L|z|Z)(u|U)?
+            (?:
+                ((?:u|U)(?:ll|LL|l|L|z|Z)?|(?:ll|LL|l|L|z|Z)(?:u|U)?)\b|
+                ([a-zA-Z_][0-9a-zA-Z_]*)
             )?
         captures:
             1: { name: keyword.other.unit.binary.cpp }
             2: { name: keyword.other.unit.suffix.integer.cpp }
+            3: { name: keyword.other.unit.suffix.user-defined.cpp }
     octalInteger:
         name: constant.numeric.octal.cpp
         match: >
@@ -281,13 +301,14 @@ repository:
             (?:
                 [0-7](?:'?[0-7])*
             )
-            (
-              (u|U)(ll|LL|l|L|z|Z)?|
-              (ll|LL|l|L|z|Z)(u|U)?
+            (?:
+                ((?:u|U)(?:ll|LL|l|L|z|Z)?|(?:ll|LL|l|L|z|Z)(?:u|U)?)\b|
+                ([a-zA-Z_][0-9a-zA-Z_]*)
             )?
         captures:
             1: { name: keyword.other.unit.octal.cpp }
             2: { name: keyword.other.unit.suffix.integer.cpp }
+            3: { name: keyword.other.unit.suffix.user-defined.cpp }
     hexadecimalInteger:
         name: constant.numeric.hexadecimal.cpp
         match: >
@@ -296,13 +317,14 @@ repository:
             (?:
                 [0-9a-fA-F](?:'?[0-9a-fA-F])*
             )
-            (
-              (u|U)(ll|LL|l|L|z|Z)?|
-              (ll|LL|l|L|z|Z)(u|U)?
+            (?:
+                ((?:u|U)(?:ll|LL|l|L|z|Z)?|(?:ll|LL|l|L|z|Z)(?:u|U)?)\b|
+                ([a-zA-Z_][0-9a-zA-Z_]*)
             )?
         captures:
             1: { name: keyword.other.unit.hexadecimal.cpp }
             2: { name: keyword.other.unit.suffix.integer.cpp }
+            3: { name: keyword.other.unit.suffix.user-defined.cpp }
     decimalInteger:
         name: constant.numeric.decimal.cpp
         match: >
@@ -310,24 +332,26 @@ repository:
             (?:
                 [1-9](?:'?[0-9])*|0
             )
-            (
-              (u|U)(ll|LL|l|L|z|Z)?|
-              (ll|LL|l|L|z|Z)(u|U)?
+            (?:
+                ((?:u|U)(?:ll|LL|l|L|z|Z)?|(?:ll|LL|l|L|z|Z)(?:u|U)?)\b|
+                ([a-zA-Z_][0-9a-zA-Z_]*)
             )?
         captures:
             1: { name: keyword.other.unit.suffix.integer.cpp }
+            2: { name: keyword.other.unit.suffix.user-defined.cpp }
 
-    # TODO: invalid case for something like 0x1.2
+    # TODO: invalid case for floats
     invalidNumberPrecheck:
         name: invalid.illegal.constant.numeric.cpp
         match: >
             (?x)(?<!\w)
             (?:
                 (?:0b|0B)[2-9][0-9']*|
-                (?:0b|0B)(?![0-1])|
                 (?:0b|0B)[0-1](?:'?[0-1])*'?[2-9][0-9']*|
+                (?:0b|0B)(?![0-1])|
                 0'?[8-9][0-9']*|
-                0'?[0-7](?:'?[0-7])*'?[8-9][0-9']*
+                0'?[0-7](?:'?[0-7])*'?[8-9][0-9']*|
+                (?:0x|0X)[0-9a-fA-F]*\.[0-9a-fA-F]*+(?![pP])
             )
 
     # invalidNumberPostcheck:
@@ -359,8 +383,8 @@ repository:
 
     stringDoubleRaw:
         name: string.quoted.double.raw.cpp
-        begin: (u|u8|U|L)?R\"[^\(\)\\\s]*\(
-        end: \)[^\(\)\\\s]*\"
+        begin: (u|u8|U|L)?R\"[^\(\)\\\s]{0,16}\(
+        end: \)[^\(\)\\\s]{0,16}\"
         beginCaptures:
             0: { name: punctuation.definition.string.begin.cpp }
             1: { name: meta.encoding.cpp }
@@ -379,6 +403,7 @@ repository:
         patterns:
           - include: '#escapeCharacter'
 
+    # TODO: support invalid escape char
     escapeCharacter:
         patterns:
           - name: constant.character.escape
@@ -394,6 +419,9 @@ repository:
 
     # ==================================================
     # preprocessor
+
+    # TODO: allow comments in preprocessor
+    # TODO: support null directive
     preprocessDirectives:
         patterns:
           - include: '#preprocessorDefine'
@@ -405,16 +433,18 @@ repository:
           - include: '#preprocessorLine'
           - include: '#preprocessorDiagonistic'
           - include: '#preprocessorPragma'
+          - include: '#preprocessorUnknown'
 
     # TODO: refine coloring in macro body
     # TODO: fix coloring for #/## used in macro body
     preprocessorDefine:
         name: meta.preprocessor.define.cpp
-        begin: '^\s*(?=#define\b)'
+        begin: '^\s*(?=#\s*define\b)'
         end: (?<!\\)\R
         patterns:
           - include: '#preprocessLineContinuation'
-          - begin: '(#define)\s+([a-zA-Z_][0_9a-zA-Z_]*)\('
+          # function-like macro
+          - begin: '(#\s*define)\s+([a-zA-Z_][0_9a-zA-Z_]*)\('
             end: '\)'
             beginCaptures:
               1: { name: keyword.control.directive.define.cpp }
@@ -424,7 +454,8 @@ repository:
                 match: ','
               - name: variable.parameter.preprocessor.cpp
                 match: '\b[a-zA-Z_][0_9a-zA-Z_]*\b'
-          - match: '(#define)\s+([a-zA-Z_][0_9a-zA-Z_]*)\b'
+          # variable-like macro
+          - match: '(#\s*define)\s+([a-zA-Z_][0_9a-zA-Z_]*)\b'
             captures:
               1: { name: keyword.control.directive.define.cpp }
               2: { name: entity.name.macro.cpp }
@@ -436,7 +467,7 @@ repository:
 
     preprocessorUndef:
         name: meta.preprocessor.undef.cpp
-        begin: '^\s*(#undef)\s+'
+        begin: '^\s*(#\s*undef)\s+'
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.undef.cpp }
@@ -445,25 +476,35 @@ repository:
           - name: entity.name.macro.cpp
             match: '\b[a-zA-Z_][0_9a-zA-Z_]*\b'
 
-    # TODO: fix __has_include(<vector>)
-    # TODO: fix __has_cpp_attribute(noreturn)
+    # TODO: support macro expansion in __has_include
     preprocessorConditionalExpr:
         name: meta.preprocessor.conditional.cpp
-        begin: ^\s*(#(if|elif))\s+
+        begin: ^\s*(#\s*(if|elif))\s+
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.$2.cpp }
         patterns:
-            - name: keyword.control.directive.$1.cpp
-              match: \b(defined|__has_include|__has_cpp_attribute)\b
             - include: '#preprocessLineContinuation'
-            - include: '#numberLiterals'
-            - include: '#stringLiterals'
-            - include: '#operators'
+            - begin: '\b(__has_include)\((?=["<])'
+              end: '(?<=[">])\)'
+              beginCaptures:
+                1: { name: keyword.control.directive.__has_include.cpp }
+              patterns:
+                - include: '#preprocessLineContinuation'
+                - include: '#preprocessStringDouble'
+                - include: '#preprocessStringLtGt'
+                - include: '#preprocessExpr'
+            - name: keyword.control.directive.defined.cpp
+              match: '\b(?:defined)\b'
+            - name: keyword.control.directive.__has_cpp_attribute.cpp
+              match: \b(?:__has_cpp_attribute)\b
+              captures:
+                0: { keyword.control.directive.__has_cpp_attribute.cpp }
+            - include: '#preprocessExpr'
 
     preprocessorConditionalId:
         name: meta.preprocessor.conditional.cpp
-        begin: ^\s*(#(ifdef|ifndef|elifdef|elifndef))\s+
+        begin: ^\s*(#\s*(ifdef|ifndef|elifdef|elifndef))\s+
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.$2.cpp }
@@ -472,7 +513,7 @@ repository:
 
     preprocessorConditionalNone:
         name: meta.preprocessor.conditional.cpp
-        begin: ^\s*(#(else|endif))\s+
+        begin: ^\s*(#\s*(else|endif))\s+
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.$2.cpp }
@@ -481,7 +522,7 @@ repository:
 
     preprocessorInclude:
         name: meta.preprocessor.include.cpp
-        begin: ^\s*(#include)\s+
+        begin: ^\s*(#\s*include)\s+
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.include.cpp }
@@ -492,7 +533,7 @@ repository:
 
     preprocessorLine:
         name: meta.preprocessor.line.cpp
-        begin: ^\s*(#line)\s+
+        begin: ^\s*(#\s*line)\s+
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.line.cpp }
@@ -504,7 +545,7 @@ repository:
 
     preprocessorDiagonistic:
         name: meta.preprocessor.$2.cpp
-        begin: ^\s*(#(warning|error))\s+
+        begin: ^\s*(#\s*(warning|error))\s+
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.$2.cpp }
@@ -516,7 +557,7 @@ repository:
 
     preprocessorPragma:
         name: meta.preprocessor.pragma.cpp
-        begin: ^\s*(#pragma)\s+
+        begin: ^\s*(#\s*pragma)\s+
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.pragma.cpp }
@@ -526,9 +567,23 @@ repository:
           - include: '#operaters'
           - include: '#numberLiterals'
 
+    preprocessorUnknown:
+        name: meta.preprocessor.unknown.cpp
+        begin: ^\s*(#\s*\w*)
+        end: (?<!\\)\R
+        beginCaptures:
+          1: { name: keyword.control.directive.unknown.cpp }
+
     preprocessLineContinuation:
         patterns:
           - include: '#operatorLineContinuation'
+
+    preprocessExpr:
+        patterns:
+          - include: '#comments'
+          - include: '#operators'
+          - include: '#numberLiterals'
+          - include: '#stringLiterals'
 
     preprocessStringDouble:
         name: string.quoted.double.cpp

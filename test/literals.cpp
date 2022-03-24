@@ -35,6 +35,7 @@ void NumberLiterals() {
         0b2,
         0b02,
         0b01ulu,
+        0fe1,
         08,
         08325,
         123zz,
@@ -71,7 +72,6 @@ void NumberLiterals() {
         0e1e1,
         0.fl,
         0e1ff,
-        0fe1,
         0x1.2,
     };
 
