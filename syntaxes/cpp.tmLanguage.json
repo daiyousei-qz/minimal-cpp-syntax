@@ -87,7 +87,7 @@
     },
     "keywordOther": {
       "name": "keyword.cpp",
-      "match": "(?x)\\b (?:\n    # a-z\n    alignas|alignof|asm|auto|bool|break|\n    case|catch|char|char8_t|char16_t|char32_t|\n    class|concept|const|consteval|constexpr|\n    constinit|const_cast|continue|co_await|\n    co_return|co_yield|decltype|default|delete|\n    do|double|dynamic_cast|else|enum|explicit|\n    export|extern|false|float|for|friend|goto|\n    if|inline|int|long|mutable|namespace|new|\n    noexcept|nullptr|operator|private|protected|\n    public|register|reinterpret_cast|requires|\n    return|short|signed|sizeof|static|static_cast|\n    struct|switch|template|this|thread_local|\n    throw|true|try|typedef|typeid|typename|\n    union|unsigned|using|virtual|void|volatile|\n    wchar_t|while|\n\n    # contextual\n    final|override|import|module\n) \\b\n"
+      "match": "(?x)\\b (?:\n    # a-z\n    alignas|alignof|asm|auto|bool|break|\n    case|catch|char|char8_t|char16_t|char32_t|\n    class|concept|const|consteval|constexpr|\n    constinit|const_cast|continue|co_await|\n    co_return|co_yield|decltype|default|delete|\n    do|double|dynamic_cast|else|enum|explicit|\n    export|extern|false|float|for|friend|goto|\n    if|inline|int|long|mutable|namespace|new|\n    noexcept|nullptr|operator|private|protected|\n    public|register|reinterpret_cast|requires|\n    return|short|signed|sizeof|static|static_assert|\n    static_cast|struct|switch|template|this|\n    thread_local|throw|true|try|typedef|typeid|\n    typename|union|unsigned|using|virtual|void|\n    volatile|wchar_t|while|\n\n    # contextual\n    final|override|import|module\n) \\b\n"
     },
     "operators": {
       "patterns": [
@@ -570,7 +570,7 @@
     },
     "preprocessorUndef": {
       "name": "meta.preprocessor.undef.cpp",
-      "begin": "^\\s*(#\\s*undef)\\s+",
+      "begin": "^\\s*(#\\s*undef)\\b",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -582,6 +582,9 @@
           "include": "#preprocessLineContinuation"
         },
         {
+          "include": "#comments"
+        },
+        {
           "name": "entity.name.macro.cpp",
           "match": "\\b[a-zA-Z_][0_9a-zA-Z_]*\\b"
         }
@@ -589,7 +592,7 @@
     },
     "preprocessorConditionalExpr": {
       "name": "meta.preprocessor.conditional.cpp",
-      "begin": "^\\s*(#\\s*(if|elif))\\s+",
+      "begin": "^\\s*(#\\s*(if|elif))\\b",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -638,12 +641,15 @@
         },
         {
           "include": "#preprocessExpr"
+        },
+        {
+          "include": "#comments"
         }
       ]
     },
     "preprocessorConditionalId": {
       "name": "meta.preprocessor.conditional.cpp",
-      "begin": "^\\s*(#\\s*(ifdef|ifndef|elifdef|elifndef))\\s+",
+      "begin": "^\\s*(#\\s*(ifdef|ifndef|elifdef|elifndef))\\b",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -653,12 +659,15 @@
       "patterns": [
         {
           "include": "#preprocessLineContinuation"
+        },
+        {
+          "include": "#comments"
         }
       ]
     },
     "preprocessorConditionalNone": {
       "name": "meta.preprocessor.conditional.cpp",
-      "begin": "^\\s*(#\\s*(else|endif))\\s+",
+      "begin": "^\\s*(#\\s*(else|endif))\\b",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -668,12 +677,15 @@
       "patterns": [
         {
           "include": "#preprocessLineContinuation"
+        },
+        {
+          "include": "#comments"
         }
       ]
     },
     "preprocessorInclude": {
       "name": "meta.preprocessor.include.cpp",
-      "begin": "^\\s*(#\\s*include)\\s+",
+      "begin": "^\\s*(#\\s*include)\\b",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -685,6 +697,9 @@
           "include": "#preprocessLineContinuation"
         },
         {
+          "include": "#comments"
+        },
+        {
           "include": "#preprocessStringDouble"
         },
         {
@@ -694,7 +709,7 @@
     },
     "preprocessorLine": {
       "name": "meta.preprocessor.line.cpp",
-      "begin": "^\\s*(#\\s*line)\\s+",
+      "begin": "^\\s*(#\\s*line)\\b",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -704,6 +719,9 @@
       "patterns": [
         {
           "include": "#preprocessLineContinuation"
+        },
+        {
+          "include": "#comments"
         },
         {
           "include": "#preprocessStringDouble"
@@ -716,7 +734,7 @@
     },
     "preprocessorDiagonistic": {
       "name": "meta.preprocessor.$2.cpp",
-      "begin": "^\\s*(#\\s*(warning|error))\\s+",
+      "begin": "^\\s*(#\\s*(warning|error))\\b",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -726,6 +744,9 @@
       "patterns": [
         {
           "include": "#preprocessLineContinuation"
+        },
+        {
+          "include": "#comments"
         },
         {
           "include": "#preprocessStringDouble"
@@ -738,7 +759,7 @@
     },
     "preprocessorPragma": {
       "name": "meta.preprocessor.pragma.cpp",
-      "begin": "^\\s*(#\\s*pragma)\\s+",
+      "begin": "^\\s*(#\\s*pragma)\\b",
       "end": "(?<!\\\\)\\R",
       "beginCaptures": {
         "1": {
@@ -748,6 +769,9 @@
       "patterns": [
         {
           "include": "#preprocessLineContinuation"
+        },
+        {
+          "include": "#comments"
         },
         {
           "include": "#preprocessStringDouble"

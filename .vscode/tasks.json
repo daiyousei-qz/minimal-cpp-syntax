@@ -31,7 +31,8 @@
                 }
             },
             "command": "npx vsce package",
-            "problemMatcher": []
+            "problemMatcher": [],
+            "dependsOn": [ "build-syntax" ]
         }
     ]
 }

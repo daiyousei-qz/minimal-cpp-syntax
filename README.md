@@ -23,7 +23,7 @@ To be used as a light-weight complement of a language-server-based semantic high
 
 What this extension cannot do:
 
-Provides what the best that a syntax highlighter could offer and replace other C++ syntax highlighters.
+Provides what the best that a syntax highlighter could offer and replace other state-of-the-art C++ syntax highlighters.
 
 ## Requirements
 

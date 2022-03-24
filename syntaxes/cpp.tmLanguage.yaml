@@ -73,11 +73,11 @@ repository:
               if|inline|int|long|mutable|namespace|new|
               noexcept|nullptr|operator|private|protected|
               public|register|reinterpret_cast|requires|
-              return|short|signed|sizeof|static|static_cast|
-              struct|switch|template|this|thread_local|
-              throw|true|try|typedef|typeid|typename|
-              union|unsigned|using|virtual|void|volatile|
-              wchar_t|while|
+              return|short|signed|sizeof|static|static_assert|
+              static_cast|struct|switch|template|this|
+              thread_local|throw|true|try|typedef|typeid|
+              typename|union|unsigned|using|virtual|void|
+              volatile|wchar_t|while|
 
               # contextual
               final|override|import|module
@@ -467,19 +467,20 @@ repository:
 
     preprocessorUndef:
         name: meta.preprocessor.undef.cpp
-        begin: '^\s*(#\s*undef)\s+'
+        begin: '^\s*(#\s*undef)\b'
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.undef.cpp }
         patterns:
           - include: '#preprocessLineContinuation'
+          - include: '#comments'
           - name: entity.name.macro.cpp
             match: '\b[a-zA-Z_][0_9a-zA-Z_]*\b'
 
     # TODO: support macro expansion in __has_include
     preprocessorConditionalExpr:
         name: meta.preprocessor.conditional.cpp
-        begin: ^\s*(#\s*(if|elif))\s+
+        begin: ^\s*(#\s*(if|elif))\b
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.$2.cpp }
@@ -501,68 +502,75 @@ repository:
               captures:
                 0: { keyword.control.directive.__has_cpp_attribute.cpp }
             - include: '#preprocessExpr'
+            - include: '#comments'
 
     preprocessorConditionalId:
         name: meta.preprocessor.conditional.cpp
-        begin: ^\s*(#\s*(ifdef|ifndef|elifdef|elifndef))\s+
+        begin: ^\s*(#\s*(ifdef|ifndef|elifdef|elifndef))\b
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.$2.cpp }
         patterns:
           - include: '#preprocessLineContinuation'
+          - include: '#comments'
 
     preprocessorConditionalNone:
         name: meta.preprocessor.conditional.cpp
-        begin: ^\s*(#\s*(else|endif))\s+
+        begin: ^\s*(#\s*(else|endif))\b
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.$2.cpp }
         patterns:
           - include: '#preprocessLineContinuation'
+          - include: '#comments'
 
     preprocessorInclude:
         name: meta.preprocessor.include.cpp
-        begin: ^\s*(#\s*include)\s+
+        begin: ^\s*(#\s*include)\b
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.include.cpp }
         patterns:
           - include: '#preprocessLineContinuation'
+          - include: '#comments'
           - include: '#preprocessStringDouble'
           - include: '#preprocessStringLtGt'
 
     preprocessorLine:
         name: meta.preprocessor.line.cpp
-        begin: ^\s*(#\s*line)\s+
+        begin: ^\s*(#\s*line)\b
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.line.cpp }
         patterns:
           - include: '#preprocessLineContinuation'
+          - include: '#comments'
           - include: '#preprocessStringDouble'
           - name: constant.numeric.decimal.cpp
             match: '\d+'
 
     preprocessorDiagonistic:
         name: meta.preprocessor.$2.cpp
-        begin: ^\s*(#\s*(warning|error))\s+
+        begin: ^\s*(#\s*(warning|error))\b
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.$2.cpp }
         patterns:
           - include: '#preprocessLineContinuation'
+          - include: '#comments'
           - include: '#preprocessStringDouble'
           - name: string.unquoted.cpp
             match: '.'
 
     preprocessorPragma:
         name: meta.preprocessor.pragma.cpp
-        begin: ^\s*(#\s*pragma)\s+
+        begin: ^\s*(#\s*pragma)\b
         end: (?<!\\)\R
         beginCaptures:
           1: { name: keyword.control.directive.pragma.cpp }
         patterns:
           - include: '#preprocessLineContinuation'
+          - include: '#comments'
           - include: '#preprocessStringDouble'
           - include: '#operaters'
           - include: '#numberLiterals'

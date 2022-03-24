@@ -51,10 +51,10 @@ BUZ
 #else
 #endif
 
-#define HELLO(X) 1
+#   define HELLO(X) 1
 #if HELLO(int)
 
-#endif
+#endif // comment
 
 #if __has_include(<vector>) && __has_cpp_attribute(noreturn)
 
