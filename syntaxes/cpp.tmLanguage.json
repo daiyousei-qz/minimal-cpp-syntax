@@ -568,9 +568,6 @@
         },
         {
           "include": "#stringLiterals"
-        },
-        {
-          "include": "#entityNames"
         }
       ]
     },

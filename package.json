@@ -15,10 +15,12 @@
         "Programming Languages"
     ],
     "contributes": {
-        "grammars": [{
-            "language": "cpp",
-            "scopeName": "source.cpp",
-            "path": "./syntaxes/cpp.tmLanguage.json"
-        }]
+        "grammars": [
+            {
+                "language": "cpp",
+                "scopeName": "source.cpp",
+                "path": "./syntaxes/cpp.tmLanguage.json"
+            }
+        ]
     }
 }

@@ -466,7 +466,6 @@ repository:
           - include: '#operators'
           - include: '#numberLiterals'
           - include: '#stringLiterals'
-          - include: '#entityNames'
 
     preprocessorUndef:
         name: meta.preprocessor.undef.cpp
