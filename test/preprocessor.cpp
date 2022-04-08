@@ -3,6 +3,8 @@
 #pragma \
     once
 
+_Pragma("")
+
 #pragma region
 
 #pragma endregion
@@ -26,6 +28,7 @@ stdio>
     "message next line"
 
 // macro
+#define TEST(X) X::Y()
 #define FOO
 #define BAR(A, B) A + B
 #define BUZ(A, B, C) \
@@ -56,6 +59,7 @@ BUZ
 
 #endif // comment
 
-#if __has_include(<vector>) && __has_cpp_attribute(noreturn)
+#if __has_include(<ve\
+ctor>) && __has_cpp_attribute(noreturn)
 
 #endif

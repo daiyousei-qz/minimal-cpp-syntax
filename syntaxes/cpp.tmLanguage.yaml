@@ -10,6 +10,7 @@ patterns:
     - include: '#stringLiterals'
     - include: '#operators'
     - include: '#preprocessDirectives'
+    - include: '#entityNames'
 
 repository:
     # ==================================================
@@ -49,7 +50,7 @@ repository:
 
     keywordControl:
         name: keyword.control.$1.cpp
-        match: '\b(if|else|switch|case|default(?=\s*:)|while|for|break|continue|return|goto)\b'
+        match: '\b(if|(?<=if\s+)constexpr|(?<=if\s+)consteval|else|switch|case|default(?=\s*:)|do|while|for|break|continue|return|goto)\b'
 
     keywordType:
         name: keyword.other.type.cpp
@@ -368,6 +369,7 @@ repository:
     # ==================================================
     # string literals
 
+    # TODO: support unit suffix
     stringLiterals:
         patterns:
           - include: '#stringSingle'
@@ -464,6 +466,7 @@ repository:
           - include: '#operators'
           - include: '#numberLiterals'
           - include: '#stringLiterals'
+          - include: '#entityNames'
 
     preprocessorUndef:
         name: meta.preprocessor.undef.cpp
@@ -562,6 +565,7 @@ repository:
           - name: string.unquoted.cpp
             match: '.'
 
+    # TODO: support _Pragma
     preprocessorPragma:
         name: meta.preprocessor.pragma.cpp
         begin: ^\s*(#\s*pragma)\b
@@ -574,6 +578,7 @@ repository:
           - include: '#preprocessStringDouble'
           - include: '#operaters'
           - include: '#numberLiterals'
+          - include: '#preprocessPragmaCommand'
 
     preprocessorUnknown:
         name: meta.preprocessor.unknown.cpp
@@ -614,3 +619,47 @@ repository:
           0: { name: punctuation.definition.string.end.cpp }
         patterns:
           - include: '#operatorLineContinuation'
+
+    preprocessPragmaCommand:
+        name: keyword.control.directive.pragma.command.cpp
+        match: '\b(once|pack|push|pop|region|endregion|optmize)\b'
+
+    #
+    entityNames:
+        patterns:
+          - include: '#callableName'
+          - include: '#templateCallableName'
+          - include: '#scopeName'
+          - include: '#labelName'
+          - include: '#labelName2'
+          - include: '#standaloneName'
+
+    callableName:
+        match: '([a-zA-Z_][0-9a-zA-Z_]*)(?=\s*\()'
+        captures:
+          1: { name: entity.name.other.callable.cpp }
+
+    templateCallableName:
+        match: '([a-zA-Z_][0-9a-zA-Z_]*)(?=\s*<.*>\s*\()'
+        captures:
+          1: { name: entity.name.other.callable.cpp }
+
+    scopeName:
+        match: '([a-zA-Z_][0-9a-zA-Z_]*)(?=\s*::)'
+        captures:
+          1: { name: entity.name.other.scope.cpp }
+
+    labelName:
+        match: '^\s*(?!default|public|protected|private\b)([a-zA-Z_][0-9a-zA-Z_]*)(?=\s*:(?!:))'
+        captures:
+          1: { name: entity.name.other.label.cpp }
+
+    labelName2:
+        match: '(?<=goto)\s+([a-zA-Z_][0-9a-zA-Z_]*)(?=\s*;)'
+        captures:
+          1: { name: entity.name.other.label.cpp }
+
+    standaloneName:
+        match: '([a-zA-Z_][0-9a-zA-Z_]*)'
+        captures:
+          1: { name: entity.name.other.unknown.cpp }

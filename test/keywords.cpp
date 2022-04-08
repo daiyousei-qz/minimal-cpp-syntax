@@ -62,6 +62,8 @@ int ControlFlows() {
 Start:
     if (1) {} else {}
     
+    do { } while(false);
+
     while(true) {
         if (true) continue; else break;
     }

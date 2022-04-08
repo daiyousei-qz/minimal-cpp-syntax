@@ -1,4 +1,4 @@
-# least-cpp-syntax README
+# Least C++ Syntax
 
 Because of the complexity of the C++ language, it is hard for a syntax highlighter to function correctly and accurately with regex matching. In most cases, however, a language server would be hooked up to parse the source code and recolor the majority of tokens with sementic highlighting, discarding whatever a syntax highlighter offers. As the language server has more knowledge of the intrinsic structure of the source code, it could color the source code far more accurately. On this basis, this extension intends to provide only a basic set of syntax highlighting that complements a sementic highlighing provider, achieving:
 
@@ -25,27 +25,25 @@ What this extension cannot do:
 
 Provides what the best that a syntax highlighter could offer and replace other state-of-the-art C++ syntax highlighters.
 
+Furthermore, bizarre but valid constructs such as keywords splitted by a backslash in two lines are not being colored correctly. Some ill-formed programs may be colored incorrectly as well.
+
 ## Requirements
 
-None
+Please use this extension to complement a semantic highlighter such as clangd. Standalone uses should provide a poor highlighting experience.
 
 ## Extension Settings
 
-TODO:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+None
 
 ## Known Issues
 
-TODO:
+- Support for toolchain-dependent pragmas and extensions are poor.
+- User-defined suffix for string literals are not supported yet.
 
 ## Release Notes
 
-### 0.0.1
-Initial release of Least C++ Syntax.
+### 0.0.2
+Some improvements on syntax highlighting. See changelog.
 
 ## Credits
 
