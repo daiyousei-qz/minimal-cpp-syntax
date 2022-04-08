@@ -655,7 +655,7 @@ repository:
           1: { name: entity.name.other.label.cpp }
 
     labelName2:
-        match: '(?<=goto)\s+([a-zA-Z_][0-9a-zA-Z_]*)(?=\s*;)'
+        match: '(?<=\bgoto)\s+([a-zA-Z_][0-9a-zA-Z_]*)'
         captures:
           1: { name: entity.name.other.label.cpp }
 

@@ -8,4 +8,4 @@
 
 - Fix "if constexpr" and "if consteval"
 - Add support for a number of pragma commands
-- Add support for a basic set of identifiers to color dependent names in template definitions. Note such coloring could be incorrect. For example, in `a.Foo()`, we color `Foo` as functions but they actually can be function pointer variables.
+- Add exprimental support for a basic set of identifiers to color dependent names in template definitions. Note such coloring could be incorrect. For example, in `a.Foo()`, we color `Foo` as functions but they actually can be function pointer variables.
