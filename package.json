@@ -2,7 +2,7 @@
     "name": "minimal-cpp-syntax",
     "displayName": "Minimal C++ Syntax",
     "description": "Minimal support for C++ syntax highlighting. Only to colorize tokens that the language server does not.",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "publisher": "daiyousei-qz",
     "repository": { 
         "type": "git", 

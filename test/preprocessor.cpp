@@ -55,7 +55,7 @@ BUZ
 #endif
 
 #   define HELLO(X) 1
-#if HELLO(int)
+#if /*comment*/ HELLO(int)
 
 #endif // comment
 

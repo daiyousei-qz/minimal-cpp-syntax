@@ -9,7 +9,7 @@ Because of the complexity of the C++ language, it is hard for a syntax highlight
 
 ## Features
 
-Syntax highlighting for:
+Provides basic syntax highlighting for:
 
 - Comments
 - Keywords
@@ -17,15 +17,21 @@ Syntax highlighting for:
 - String literals
 - Preprocessor directives
 
-What this extension serves:
+### What this extension **CAN** do:
+To be used as a lightweight complement of a language-server-based semantic highligher like clangd-vscode.
 
-To be used as a light-weight complement of a language-server-based semantic highligher like clangd-vscode.
-
-What this extension cannot do:
-
+### What this extension **CANNOT** do:
 Provides what the best that a syntax highlighter could offer and replace other state-of-the-art C++ syntax highlighters.
 
-Furthermore, bizarre but valid constructs such as keywords splitted by a backslash in two lines are not being colored correctly. Some ill-formed programs may be colored incorrectly as well.
+Some bizarre but valid constructs such as keywords splitted by a backslash in two lines are not being colored correctly. Some ill-formed programs may be colored incorrectly as well.
+
+## Showcase
+
+The following examples show how this extension(right) is more robust compared to Better C++ Syntax(left), while retaining most highlightings with the help of clangd:
+![](example/example_sidebyside.png)
+![](example/variant_sidebyside.png)
+
+*Captured in Better C++ Syntax v1.15.13 and Minimal C++ Syntax v0.0.3. Behaviors of both extensions may change in future versions.*
 
 ## Requirements
 
@@ -39,11 +45,7 @@ None
 
 - Support for toolchain-dependent pragmas and extensions are poor.
 - User-defined suffix for string literals are not supported yet.
-
-## Release Notes
-
-### 0.0.2
-Some improvements on syntax highlighting. See changelog.
+- No option to choose the C++ standard to highlight.
 
 ## Credits
 
